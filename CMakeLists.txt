@@ -1,16 +1,13 @@
-cmake_minimum_required(VERSION 3.10)
-project(lab03 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.8)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(equation)
 
-# Явно включаем необходимые политики
-cmake_policy(SET CMP0002 NEW)
-cmake_policy(SET CMP0079 NEW)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/formatter_ex_lib formatter_ex_new_name)
 
-# Включаем подпроекты в правильном порядке
-add_subdirectory(formatter_lib)
-add_subdirectory(formatter_ex_lib)
-add_subdirectory(solver_lib)
-add_subdirectory(hello_world_application)
-add_subdirectory(solver_application)
+target_include_directories(formatter_ex PUBLIC formatter_ex_lib formatter_lib hello_world_application solver_lib)
+
+add_library(solver ${CMAKE_CURRENT_SOURCE_DIR}/solver_lib/solver.cpp)
+
+add_executable(equation ${CMAKE_CURRENT_SOURCE_DIR}/solver_application/equation.cpp)
+
+target_link_libraries(equation formatter formatter_ex solver)
